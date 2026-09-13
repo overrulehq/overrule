@@ -21,3 +21,7 @@ Thumbs.db
 
 
 test_appeal.md 
+roadmap.md
+
+*.wasm
+appeal_test.md

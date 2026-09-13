@@ -10,6 +10,7 @@ import (
 
 	"github.com/overrulehq/overrule/pkg/appeal"
 	"github.com/overrulehq/overrule/pkg/denial"
+	"github.com/overrulehq/overrule/pkg/parser"
 	"github.com/overrulehq/overrule/pkg/server"
 )
 
@@ -20,7 +21,7 @@ const banner = `
  | |__| | |_| | |___|  _ <|  _ <| |_| | |___| |___ 
   \____/ \___/|_____|_| \_\_| \_\\___/|_____|_____|
   The Autonomous Patient Defense & Denial Overturn Engine
-  Built under Apache 2.0 • Local-First Privacy Guarantee
+  Licensed under AGPL-3.0 • Local-First Privacy Guarantee
 `
 
 func main() {
@@ -48,6 +49,93 @@ func main() {
 				c.ID, c.PatientName, c.InsurerName, c.DeniedAmount, c.Diagnoses[0].Code)
 		}
 		fmt.Println("--------------------------------------------------------------------------------")
+
+	case "parse":
+		if len(os.Args) < 3 {
+			fmt.Println("Usage: overrule parse <eob.txt | remittance.edi>")
+			os.Exit(1)
+		}
+		filePath := os.Args[2]
+		data, err := os.ReadFile(filePath)
+		if err != nil {
+			fmt.Printf("Error reading file: %v\n", err)
+			os.Exit(1)
+		}
+
+		content := string(data)
+		if strings.HasSuffix(strings.ToLower(filePath), ".edi") || strings.HasPrefix(strings.TrimSpace(content), "ISA*") {
+			claims, err := parser.Parse835EDI(content)
+			if err != nil {
+				fmt.Printf("Error parsing 835 EDI: %v\n", err)
+				os.Exit(1)
+			}
+			fmt.Printf("Successfully parsed %d claim denials from 835 Remittance File:\n\n", len(claims))
+			for i, claim := range claims {
+				c := claim.ToDenialCase()
+				fmt.Printf("[%d] Claim: %s | Patient: %s | Payer: %s | Denied: $%.2f (CARC: %s)\n",
+					i+1, c.ClaimNumber, c.PatientName, c.InsurerName, c.DeniedAmount, c.DenialReason.CARCCode)
+			}
+		} else {
+			parsed := parser.ParseRawText(content)
+			c := parsed.ToDenialCase("Elena Rostova", "Dr. Catherine M. Lee, MD")
+			fmt.Printf("=== OVERRULE PARSER VERDICT ===\n")
+			fmt.Printf("Payer:         %s\n", c.InsurerName)
+			fmt.Printf("Patient:       %s\n", c.PatientName)
+			fmt.Printf("Claim Number:  %s\n", c.ClaimNumber)
+			fmt.Printf("Policy ID:     %s\n", c.PolicyID)
+			fmt.Printf("Denied Amount: $%.2f\n", c.DeniedAmount)
+			fmt.Printf("Denial Code:   %s (%s)\n", c.DenialReason.CARCCode, c.DenialReason.Category)
+			fmt.Printf("Doctor:        %s (%s)\n", c.Physician.Name, c.Physician.Specialty)
+		}
+
+	case "generate":
+		if len(os.Args) < 3 {
+			fmt.Println("Usage: overrule generate <file.txt | file.edi> [-o output.md]")
+			os.Exit(1)
+		}
+		filePath := os.Args[2]
+		data, err := os.ReadFile(filePath)
+		if err != nil {
+			fmt.Printf("Error reading file: %v\n", err)
+			os.Exit(1)
+		}
+
+		content := string(data)
+		var c *denial.DenialCase
+
+		if strings.HasSuffix(strings.ToLower(filePath), ".edi") || strings.HasPrefix(strings.TrimSpace(content), "ISA*") {
+			claims, err := parser.Parse835EDI(content)
+			if err != nil || len(claims) == 0 {
+				fmt.Printf("Error parsing 835 EDI file: %v\n", err)
+				os.Exit(1)
+			}
+			c = claims[0].ToDenialCase()
+		} else {
+			parsed := parser.ParseRawText(content)
+			c = parsed.ToDenialCase("Elena Rostova", "Dr. Catherine M. Lee, MD")
+		}
+
+		packet := appeal.GeneratePacket(c)
+		md := packet.ToMarkdown()
+
+		outFile := ""
+		for i := 3; i < len(os.Args); i++ {
+			if os.Args[i] == "-o" && i+1 < len(os.Args) {
+				outFile = os.Args[i+1]
+				break
+			}
+		}
+
+		if outFile != "" {
+			if err := os.WriteFile(outFile, []byte(md), 0644); err != nil {
+				fmt.Printf("Error writing file: %v\n", err)
+				os.Exit(1)
+			}
+			fmt.Printf("Successfully generated court-ready appeal brief for %s ($%.2f) to: %s\n",
+				c.PatientName, c.DeniedAmount, outFile)
+		} else {
+			fmt.Println(md)
+		}
 
 	case "audit":
 		if len(os.Args) < 3 {
@@ -158,9 +246,11 @@ func printHelp() {
 	fmt.Print(banner)
 	fmt.Println("Usage: overrule <command> [arguments]")
 	fmt.Println("\nCommands:")
-	fmt.Println("  serve [--port 5050]        Launch interactive patient defense web console")
-	fmt.Println("  list                       List built-in clinical denial demonstration cases")
-	fmt.Println("  audit <case-id>            Run clinical and statutory vulnerability audit")
-	fmt.Println("  appeal <case-id> [-o path] Generate complete court-ready statutory appeal brief")
-	fmt.Println("  help                       Show this help message")
+	fmt.Println("  serve [--port 5050]                  Launch interactive patient defense web console")
+	fmt.Println("  parse <file.txt | file.edi>          Parse an EOB denial notice or ANSI 835 EDI file")
+	fmt.Println("  generate <file> [-o appeal.md]       Parse a file and generate a court-ready appeal brief")
+	fmt.Println("  list                                 List built-in clinical denial demonstration cases")
+	fmt.Println("  audit <case-id>                      Run clinical and statutory vulnerability audit")
+	fmt.Println("  appeal <case-id> [-o path]           Generate brief for preloaded demonstration case")
+	fmt.Println("  help                                 Show this help message")
 }

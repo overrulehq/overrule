@@ -1,0 +1,27 @@
+AETNA LIFE INSURANCE COMPANY
+PO BOX 14079, LEXINGTON KY 40512
+EXPLANATION OF BENEFITS / ADVERSE DETERMINATION NOTICE
+
+Date: July 02, 2026
+Member Name: Elena Rostova
+Member ID: AET-99281742
+Group Number: GRP-TECH-8820
+Claim Number: CLM-2026-88192
+Date of Service: 06/12/2026
+Attending Physician: Dr. Catherine M. Lee, MD
+Provider NPI: 1948201948
+
+CLAIM ADJUDICATION BREAKDOWN:
+Line 1: Procedure Code 77523 (Proton beam delivery to brain or spinal cord)
+Units: 15
+Total Billed Charge: $48,200.00
+Covered Amount: $0.00
+Patient Responsibility: $48,200.00
+Denial Code: CO-50 (These are non-covered services because this is not deemed a medical necessity by the payer)
+Remark Code: N130 (Consult plan benefit documents for specific policy guidelines)
+
+RATIONALE FOR ADVERSE BENEFIT DETERMINATION:
+Coverage is denied. Proton beam therapy is classified as experimental, investigational, or unproven for neuromyelitis optica spectrum disorder (NMOSD) under Clinical Policy Bulletin CPB 0270. Standard photon radiation therapy is the covered benefit under your plan.
+
+APPEAL RIGHTS:
+Under federal law (ERISA Section 503), you have the right to appeal this adverse determination within 180 days. You are entitled to receive free of charge copies of all documents and records relevant to your claim.
