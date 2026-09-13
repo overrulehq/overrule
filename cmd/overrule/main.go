@@ -40,7 +40,7 @@ func main() {
 		runServer(*port, !*noBrowser)
 
 	case "list":
-		fmt.Println(banner)
+		fmt.Print(banner)
 		fmt.Println("Available Demonstration Cases:")
 		fmt.Println("--------------------------------------------------------------------------------")
 		for _, c := range denial.SampleCases {
@@ -62,7 +62,7 @@ func main() {
 		}
 
 		packet := appeal.GeneratePacket(c)
-		fmt.Println(banner)
+		fmt.Print(banner)
 		fmt.Printf("=== OVERRULE AUDIT: %s (%s) ===\n", c.PatientName, c.ID)
 		fmt.Printf("Payer: %s | Claim: %s | Amount Denied: $%.2f\n", c.InsurerName, c.ClaimNumber, c.DeniedAmount)
 		fmt.Printf("Alleged Denial Reason: %s\n\n", c.DenialReason.RawLetterText)
@@ -129,7 +129,7 @@ func findCase(id string) *denial.DenialCase {
 }
 
 func runServer(port int, openBrowser bool) {
-	fmt.Println(banner)
+	fmt.Print(banner)
 	url := fmt.Sprintf("http://127.0.0.1:%d", port)
 	fmt.Printf("Starting Overrule Patient Defense Console on %s\n", url)
 	fmt.Println("Press Ctrl+C to stop.")
@@ -155,7 +155,7 @@ func runServer(port int, openBrowser bool) {
 }
 
 func printHelp() {
-	fmt.Println(banner)
+	fmt.Print(banner)
 	fmt.Println("Usage: overrule <command> [arguments]")
 	fmt.Println("\nCommands:")
 	fmt.Println("  serve [--port 5050]        Launch interactive patient defense web console")
