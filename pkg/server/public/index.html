@@ -1,17 +1,127 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='42' fill='none' stroke='%233a352f' stroke-width='7' stroke-dasharray='220 30' stroke-linecap='round'/%3E%3Ccircle cx='50' cy='50' r='10' fill='%23b25e40'/%3E%3C/svg%3E" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>OVERRULE • Wabi-Sabi Patient Defense & Legal Folio</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-    <script type="module" crossorigin src="/assets/index-D47_5ohG.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-DqiVmth9.css">
-  </head>
-  <body>
-    <div id="root"></div>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OVERRULE • Core Engine REST API</title>
+  <style>
+    :root {
+      --bg: #FBF9F5;
+      --card: #FFFFFF;
+      --ink: #1C1917;
+      --muted: #78716C;
+      --border: #E7E5E4;
+      --clay: #B25338;
+      --moss: #4A6B53;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      margin: 0;
+      padding: 3rem 1.5rem;
+      display: flex;
+      justify-content: center;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2.5rem;
+      max-width: 640px;
+      width: 100%;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+    }
+    .badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--moss);
+      background: #EEF6F0;
+      padding: 0.25rem 0.65rem;
+      border-radius: 9999px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 1rem;
+    }
+    h1 {
+      font-size: 1.75rem;
+      margin: 0 0 0.5rem 0;
+      font-weight: 600;
+    }
+    p {
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 0.95rem;
+      margin: 0 0 1.5rem 0;
+    }
+    .endpoint {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.85rem 1rem;
+      margin-bottom: 0.65rem;
+      font-family: monospace;
+      font-size: 0.88rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .method {
+      font-weight: 700;
+      color: var(--clay);
+    }
+    .link {
+      color: var(--clay);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .link:hover {
+      text-decoration: underline;
+    }
+    .footer {
+      margin-top: 2rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.8rem;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="badge">✓ Core Engine Active (Port 5050)</div>
+    <h1>OVERRULE Core Engine</h1>
+    <p>Autonomous healthcare claim denial defense and ERISA statutory discovery server. The modern React web client is hosted separately in <code>overrule-web/</code>.</p>
+
+    <div style="font-weight: 600; font-size: 0.85rem; margin-bottom: 0.75rem; text-transform: uppercase; color: var(--muted);">Available REST Endpoints</div>
+    
+    <div class="endpoint">
+      <span><span class="method">GET</span> /api/cases</span>
+      <a class="link" href="/api/cases" target="_blank">Query Preloaded Claims &rarr;</a>
+    </div>
+
+    <div class="endpoint">
+      <span><span class="method">GET</span> /api/audit/:id</span>
+      <a class="link" href="/api/audit/CASE-2026-AETNA-01" target="_blank">Audit Sample Denial &rarr;</a>
+    </div>
+
+    <div class="endpoint">
+      <span><span class="method">GET</span> /api/appeal/:id</span>
+      <a class="link" href="/api/appeal/CASE-2026-AETNA-01" target="_blank">Generate Statutory Appeal &rarr;</a>
+    </div>
+
+    <div class="endpoint">
+      <span><span class="method">GET</span> /api/payers</span>
+      <a class="link" href="/api/payers" target="_blank">View Insurer Rules &rarr;</a>
+    </div>
+
+    <div class="footer">
+      <span>OVERRULE Open Source • AGPL-3.0 / Commercial</span>
+      <a class="link" href="http://127.0.0.1:5173" target="_blank">Open Web Client (Port 5173) &rarr;</a>
+    </div>
+  </div>
+</body>
 </html>
